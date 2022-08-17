@@ -48,8 +48,37 @@ app.post("/send_email", (req, res) => {
         res.redirect("/")
     });
 });
+app.post("/send_email_hardcoded", (req, res) => {
+
+
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: process.env.USER_MAIL,
+            pass: process.env.PASSWORD
+        }
+    });
+
+    const mailOptions = {
+        from: "boluwatifefred@gmail.com",
+        to: "fredrickbolutife@gmail.com",
+        subject: "hi",
+        text: "congrats"
+    }
+
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.log(error);
+        } else {
+            res.status(200).json({message: "email Page"})
+            console.log("Email Sent to " + info.accepted)
+        }
+        
+    });
+    // process.exit(1);
+});
 
 server.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
-console.clear();
+// console.clear();
